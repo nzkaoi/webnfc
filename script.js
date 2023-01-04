@@ -10,6 +10,9 @@ readButton.addEventListener("click", () => {
     };
     ndef.onreading = (event) => {
       console.log("NDEF message read.");
+      console.log(event);
+      console.log(event.message);
+      console.log(event.message.records);
     };
   }).catch(error => {
     console.log(`Error! Scan failed to start: ${error}.`);
