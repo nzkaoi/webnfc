@@ -6,6 +6,7 @@ readButton.addEventListener("click", async () => {
     try {
       console.log('new ndefreader');
       const reader = new NDEFReader();
+      console.log('scanning');
       await reader.scan();
       readLog.textContent = "scan started";
   
@@ -18,12 +19,12 @@ readButton.addEventListener("click", async () => {
         console.log(message);
         console.log(message.record);
         const record = message.records[0];
-        //const { data, encoding, recordType } = record;
-        //if (recordType === "text") {
-        //  const textDecoder = new TextDecoder(encoding);
-        //  const text = textDecoder.decode(data);
-        //  readLog.textContent = text;
-        //}
+        const { data, encoding, recordType } = record;
+        if (recordType === "text") {
+          const textDecoder = new TextDecoder(encoding);
+          const text = textDecoder.decode(data);
+          readLog.textContent = text;
+        }
       });
     } catch (error) {
       readLog.textContent = error;
