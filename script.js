@@ -1,20 +1,30 @@
 const readButton = document.getElementById("readButton");
 const readLog = document.getElementById("readLog");
 
-readButton.addEventListener("click", () => {
-  const ndef = new NDEFReader();
-  ndef.scan().then(() => {
-    console.log("Scan started successfully.");
-    ndef.onreadingerror = (event) => {
-      console.log("Error! Cannot read data from the NFC tag. Try a different one?");
-    };
-    ndef.onreading = (event) => {
-      console.log("NDEF message read.");
-      console.log(event);
-      console.log(event.message);
-      console.log(event.message.records);
-    };
-  }).catch(error => {
-    console.log(`Error! Scan failed to start: ${error}.`);
+readButton.addEventListener("click", async () => {
+    readLog.textContent = await "clicked read button";
+    try {
+      const reader = new NDEFReader();
+      await reader.scan();
+      readLog.textContent = "scan started";
+  
+      reader.addEventListener("error", () => {
+        console.log("Error");
+      });
+  
+      reader.addEventListener("reading", ({ message, serialNumber }) => {
+        console.log(`> Serial Number: ${serialNumber}`);
+        console.log(message);
+        console.log(message.record);
+        const record = message.records[0];
+        //const { data, encoding, recordType } = record;
+        //if (recordType === "text") {
+        //  const textDecoder = new TextDecoder(encoding);
+        //  const text = textDecoder.decode(data);
+        //  readLog.textContent = text;
+        //}
+      });
+    } catch (error) {
+      readLog.textContent = error;
+    }
   });
-});
