@@ -4,6 +4,7 @@ const readLog = document.getElementById("readLog");
 readButton.addEventListener("click", async () => {
     readLog.textContent = await "clicked read button";
     try {
+      console.log('new ndefreader');
       const reader = new NDEFReader();
       await reader.scan();
       readLog.textContent = "scan started";
